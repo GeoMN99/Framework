@@ -9,10 +9,12 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "server": "json-server --watch src/db.json --port 4000"
   },
   "dependencies": {
     "bootstrap": "^5.3.8",
+    "json-server": "^1.0.0-beta.15",
     "react": "^19.3.1",
     "react-bootstrap-sidebar-menu": "^2.0.3",
     "react-dom": "^19.3.1"

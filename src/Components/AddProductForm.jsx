@@ -41,25 +41,27 @@ function AddProductForm({ onAddProduct }) {
   }
 
   return (
-    <div className="card p-4 mb-5 border-primary shadow-sm">
-      <h3 className="h4 mb-3 text-primary">Add New Product</h3>
-      <form onSubmit={handleSubmit} className="row g-3">
+    <div className="card p-3 mb-4 border-primary shadow-sm">
+      <h3 className="h5 mb-2 text-primary">Add New Product</h3>
+
+      <form onSubmit={handleSubmit} className="row g-2">
         <div className="col-md-6">
-          <label className="form-label">Product Name</label>
+          <label className="form-label small mb-1">Product Name</label>
           <input
             type="text"
-            className="form-control"
+            className="form-control form-control-sm"
             name="name"
             value={formData.name}
             onChange={handleFormChange}
             required
           />
         </div>
+
         <div className="col-md-6">
-          <label className="form-label">Price ($)</label>
+          <label className="form-label small mb-1">Price ($)</label>
           <input
             type="number"
-            className="form-control"
+            className="form-control form-control-sm"
             name="price"
             value={formData.price}
             onChange={handleFormChange}
@@ -68,29 +70,32 @@ function AddProductForm({ onAddProduct }) {
             step="0.01"
           />
         </div>
+
         <div className="col-12">
-          <label className="form-label">Image URL</label>
+          <label className="form-label small mb-1">Image URL</label>
           <input
             type="url"
-            className="form-control"
+            className="form-control form-control-sm"
             name="image"
             value={formData.image}
             onChange={handleFormChange}
             placeholder="https://example.com"
           />
         </div>
+
         <div className="col-12">
-          <label className="form-label">Description</label>
+          <label className="form-label small mb-1">Description</label>
           <textarea
-            className="form-control"
+            className="form-control form-control-sm"
             name="description"
             value={formData.description}
             onChange={handleFormChange}
             rows="2"
-          ></textarea>
+          />
         </div>
+
         <div className="col-12">
-          <div className="form-check">
+          <div className="form-check small">
             <input
               type="checkbox"
               className="form-check-input"
@@ -104,8 +109,9 @@ function AddProductForm({ onAddProduct }) {
             </label>
           </div>
         </div>
+
         <div className="col-12">
-          <button type="submit" className="btn btn-success w-100">
+          <button type="submit" className="btn btn-success btn-sm w-100">
             Create and Add Product
           </button>
         </div>

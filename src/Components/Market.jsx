@@ -1,115 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ProductCard from "./ProductCard";
 import AddProductForm from "./AddProductForm";
+import { useContext } from "react";
+import { ProductContext } from "../context/ProductContext";
 
-const products = [
-  {
-    id: 1,
-    name: "Framework Laptop 12 (Intel® Core™ Series 3)",
-    image: "/imege 1.jpg",
-    description: "13-inch modular laptop...",
-    price: 699,
-    isAvailable: true,
-  },
-  {
-    id: 2,
-    name: "Framework Laptop 12 DIY Edition (Intel® Core™ Series 3)",
-    image: "/Hp Omega 16 Max Ultra.webp",
-    description: "16-inch performance laptop...",
-    price: 549,
-    isAvailable: true,
-  },
-  {
-    id: 3,
-    name: "Framework Laptop 13 Pro DIY Edition (AMD Ryzen™ AI 300 Series)",
-    image: "/Laptop 13.jpg",
-    description: "12-inch compact laptop...",
-    price: 1399,
-    isAvailable: false,
-  },
-  {
-    id: 4,
-    name: "Framework Laptop 13 Pro DIY Edition (Intel® Core™ Ultra Series 3)",
-    image: "/Laptop12.jpg",
-    description: "13-inch modular laptop...",
-    price: 1199,
-    isAvailable: false,
-  },
-  {
-    id: 5,
-    name: "Framework Laptop 16 Pro DIY Edition (Intel® Core™ Ultra Series 3)",
-    image: "/Laptop 16.png",
-    description: "16-inch performance laptop...",
-    price: 1699,
-    isAvailable: true,
-  },
-  {
-    id: 6,
-    name: "Framework Laptop 13 Pro (AMD Ryzen™ AI 300 Series)",
-    image: "/framework-laptop-13-pro-amd.jpg",
-    description:
-      "13-inch premium modular laptop powered by AMD Ryzen AI 300 Series.",
-    price: 2299,
-    isAvailable: true,
-  },
-  {
-    id: 7,
-    name: "Framework Laptop 13 Pro (Intel® Core™ Ultra Series 3)",
-    image: "/framework-laptop-13-pro-intel.jpg",
-    description:
-      "13-inch premium modular laptop powered by Intel Core Ultra Series 3.",
-    price: 1599,
-    isAvailable: true,
-  },
-  {
-    id: 8,
-    name: "Framework Laptop 16 (AMD Ryzen™ AI 300 Series)",
-    image: "/framework-laptop-16-amd.jpg",
-    description:
-      "16-inch modular performance laptop powered by AMD Ryzen AI 300 Series.",
-    price: 1839,
-    isAvailable: true,
-  },
-  {
-    id: 9,
-    name: "Framework Laptop 16 DIY Edition (AMD Ryzen™ AI 300 Series)",
-    image: "/framework-laptop-16-diy.jpg",
-    description:
-      "16-inch customizable DIY modular laptop powered by AMD Ryzen AI 300 Series.",
-    price: 1249,
-    isAvailable: true,
-  },
-  {
-    id: 10,
-    name: "Framework Laptop 13 DIY Edition (AMD Ryzen™ AI 300 Series)",
-    image: "/framework-laptop-13-diy.jpg",
-    description:
-      "13-inch customizable modular laptop powered by AMD Ryzen AI 300 Series.",
-    price: 849,
-    isAvailable: true,
-  },
-  {
-    id: 11,
-    name: "Framework Laptop 13 (AMD Ryzen™ AI 300 Series)",
-    image: "/framework-laptop-13-pro-amd.jpg",
-    description:
-      "13-inch modular laptop with AMD Ryzen AI 300 Series processors.",
-    price: 1049,
-    isAvailable: true,
-  },
-  {
-    id: 12,
-    name: "Framework Laptop 12 (13th Gen Intel® Core™)",
-    image: "/framework-laptop-12-intel.jpg",
-    description:
-      "12-inch modular laptop powered by 13th Gen Intel Core processors.",
-    price: 699,
-    isAvailable: true,
-  },
-];
+function Market() {
+  const { cart, addToCart, search } = useContext(ProductContext);
 
-function Market({ cart, addToCart, search }) {
+  const [products, setProducts] = useState([]);
+
   const [addedProducts, setAddedProducts] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:4000/products")
+      .then((response) => response.json())
+      .then((data) => setProducts(data))
+      .catch((error) => console.error("Error fetching products:", error));
+  }, []);
 
   function handleAddProduct(newProduct) {
     setAddedProducts((previousProducts) => [
@@ -119,6 +26,54 @@ function Market({ cart, addToCart, search }) {
         id: newProduct.id ?? Date.now(),
       },
     ]);
+  }
+
+  // Update product price
+  // function handleUpdatePrice(id, newPrice) {
+  //   setProducts((prevProducts) =>
+  //     prevProducts.map((product) =>
+  //       product.id === id ? { ...product, price: newPrice } : product,
+  //     ),
+  //   );
+  // }
+
+  function handleUpdatePrice(id, data) {
+    fetch(`http://localhost:4000/products/${id}`, {
+      method: "PATCH",
+      headers: {
+        accept: "application/json",
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const updatedProducts = products.map((product) => {
+          if (product.id === data.id) {
+            product.price = data.price;
+          }
+          return product;
+        });
+
+        setProducts([...updatedProducts]);
+      });
+  }
+
+  //Deleting a Product
+  function handleDelete(id) {
+    fetch(`http://localhost:4000/products/${id}`, {
+      method: "DELETE",
+      headers: {
+        accept: "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const filteredProducts = products.filter(
+          (product) => product.id !== data.id,
+        );
+        setProducts([...filteredProducts]);
+      });
   }
 
   const allProducts = [...products, ...addedProducts];
@@ -158,7 +113,11 @@ function Market({ cart, addToCart, search }) {
       {filteredProducts.length > 0 ? (
         filteredProducts.map((product) => (
           <div className="col-12 col-sm-6 col-lg-4 mb-5" key={product.id}>
-            <ProductCard product={product} />
+            <ProductCard
+              product={product}
+              onUpdatePrice={handleUpdatePrice}
+              onDelete={handleDelete}
+            />
 
             <button
               type="button"

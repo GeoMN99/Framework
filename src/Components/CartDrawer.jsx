@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { CartContext } from "../context/CartContext";
 
-export default function CartDrawer({ isOpen, onClose, cart, removeFromCart }) {
+export default function CartDrawer({ isOpen, onClose }) {
+  const { cart, removeFromCart } = useContext(CartContext);
+
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   if (!isOpen) return null;
 

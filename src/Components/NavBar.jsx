@@ -9,7 +9,7 @@ export default function NavBar({ cart, onOpenCart, search, setSearch }) {
       <nav className="navbar navbar-expand-lg bg-white border-bottom sticky-top py-3">
         <div className="container-fluid px-lg-5">
           <button
-            className="navbar-toggler border-0 shadow-none me-3"
+            className="navbar border-0 shadow-none me-3"
             type="button"
             onClick={() => setDrawerOpen(true)}
             aria-label="Open navigation menu"
@@ -50,7 +50,6 @@ export default function NavBar({ cart, onOpenCart, search, setSearch }) {
                 </a>
               </li>
             </ul>
-            {/* Search form */}
 
             <form
               className="d-flex mx-lg-3 my-3 my-lg-0"
@@ -83,7 +82,6 @@ export default function NavBar({ cart, onOpenCart, search, setSearch }) {
                 )}
               </div>
             </form>
-            {/* Account and cart */}
 
             <div className="d-flex align-items-center gap-4 ms-lg-3">
               <a

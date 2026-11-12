@@ -3,7 +3,6 @@ export default function Features() {
     <section className="py-5 bg-dark text-white">
       <div className="container">
         <div className="row text-center g-4">
-          {/* Feature 1 */}
           <div className="col-md-4">
             <i className="bi bi-battery-charging fs-1 text-warning"></i>
             <h3 className="mt-3 fs-4 fw-bold">20 hours of battery</h3>
@@ -13,7 +12,6 @@ export default function Features() {
             </p>
           </div>
 
-          {/* Feature 2 */}
           <div className="col-md-4">
             <i className="bi bi-laptop fs-1 text-warning"></i>
             <h3 className="mt-3 fs-4 fw-bold">CNC aluminum chassis</h3>
@@ -23,7 +21,6 @@ export default function Features() {
             </p>
           </div>
 
-          {/* Feature 3 */}
           <div className="col-md-4">
             <i className="bi bi-ubuntu fs-1 text-warning"></i>
             <h3 className="mt-3 fs-4 fw-bold">Linux first</h3>
